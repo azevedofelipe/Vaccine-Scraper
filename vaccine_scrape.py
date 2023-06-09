@@ -7,19 +7,17 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.chrome.options import Options
 import time
 
-
-download_dir = "/Users/Felipe/Desktop/Projects/vacina_scrape/Downloads/"
-
+# Creates custom options to change download directory
 options = Options()
 options.add_experimental_option('prefs',  {
-    "download.default_directory": download_dir,
-    "download.prompt_for_download": False,
-    "download.directory_upgrade": True
+    "download.default_directory": r"C:\Users\Felipe\Desktop\Projects\vacina_scrape\Downloads"
     }
 )
-service = Service(ChromeDriverManager().install())
-browser = webdriver.Chrome(service=service, options=options)
+service = Service('C:\\Users\\Felipe\\Desktop\\Projects\\vacina_scrape\\chromedriver.exe')
 
+
+# Initializes browser with service and custom options
+browser = webdriver.Chrome(service=service, options=options)
 browser.get("http://tabnet.datasus.gov.br/cgi/dhdat.exe?bd_pni/cpnibr.def")
 browser.maximize_window()
 
@@ -46,9 +44,11 @@ for window_handle in browser.window_handles:
         browser.switch_to.window(window_handle)
         break
 
+# Waits until download button visible
 wait.until(EC.visibility_of_element_located((By.XPATH, "/html/body/center[2]/div[@class='nivel2']/table[@class='escondido']/tbody/tr/td[2]/a")))
 
 
+# Downloads the csv file waits 5 seconds and quits
 CSV = browser.find_element(By.XPATH, "/html/body/center[2]/div[@class='nivel2']/table[@class='escondido']/tbody/tr/td[2]/a").click()
 time.sleep(5)
 browser.quit()
