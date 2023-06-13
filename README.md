@@ -7,6 +7,8 @@ pip install selenium
 
 pip install webdriver-manager
 
+pip install psycopg2
+
 
 ## Running
 Execute vaccine_scrape.py
