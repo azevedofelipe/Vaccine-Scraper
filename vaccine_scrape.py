@@ -1,10 +1,11 @@
+# Scraping imports
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
-from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.support.ui import Select
 import time
 
 # Creates custom options to change download directory
@@ -27,7 +28,11 @@ wait = WebDriverWait(browser,10)
 # Click all the option elements to fill the form properly using their XPATH
 Linha = browser.find_element(By.XPATH, "/html/body/center[2]/div[@class='container']/form/div[@class='borda']/div[@class='corpoperiodo']/div[@class='linha']/select[@id='L']/option[3]").click()
 Coluna = browser.find_element(By.XPATH, value="/html/body/center[2]/div[@class='container']/form/div[@class='borda']/div[@class='corpoperiodo']/div[@class='coluna']/select[@id='C']/option[5]").click()
-Medidas = browser.find_element(By.XPATH, value="/html/body/center[2]/div[@class='container']/form/div[@class='borda']/div[@class='corpoperiodo']/div[@class='conteudo']/select[@id='I']/option[2]").click()
+
+# Select() to remove pre selected value in the dropdown
+Medidas = Select(browser.find_element(By.XPATH, value="/html/body/center[2]/div[@class='container']/form/div[@class='borda']/div[@class='corpoperiodo']/div[@class='conteudo']/select[@id='I']"))
+Medidas.deselect_all()
+Medidas.select_by_value('Doses Cálculos CV|QT_DOSE')
 
 # Prepares for opening second window
 original_window = browser.current_window_handle
