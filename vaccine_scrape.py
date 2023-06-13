@@ -8,6 +8,11 @@ from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.support.ui import Select
 import time
 
+# DB Related imports
+from db_manager import DBManager
+import glob
+import os
+
 # Creates custom options to change download directory
 options = Options()
 options.add_experimental_option('prefs',  {
@@ -58,3 +63,15 @@ CSV = browser.find_element(By.XPATH, "/html/body/center[2]/div[@class='nivel2']/
 time.sleep(5)
 browser.quit()
 
+# Get latest downloaded csv path for DBManager
+list_of_files = glob.glob('C:/Users/Felipe/Desktop/Projects/vacina_scrape/Downloads/*.csv')
+latest_file = max(list_of_files, key=os.path.getctime)
+print(latest_file)
+
+
+db_manager = DBManager(latest_file)
+
+db_manager.open_connection()
+db_manager.init_table()
+db_manager.show_table()
+db_manager.close_connection()
